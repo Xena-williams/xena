@@ -1,0 +1,334 @@
+/* style.css - VERSI BARU DENGAN STRUKTUR PLANET 3D */
+body {
+    font-family: 'Roboto', sans-serif; margin: 0; padding: 0;
+    background-color: #00000e; /* Sangat gelap */
+    color: #e8e8f0; line-height: 1.7;
+    overflow-x: hidden; position: relative;
+}
+
+#stars-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -3; pointer-events: none;
+}
+.star {
+    position: absolute; background-color: white; border-radius: 50%;
+    box-shadow: 0 0 4px white, 0 0 8px white, 0 0 12px #ddeeff;
+    animation: twinkle linear infinite;
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 0.1; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+.solar-system-container {
+    position: fixed; top: 50%; left: 50%;
+    width: 1px; height: 1px;
+    z-index: -2;
+    perspective: 1200px; /* PENTING: Perspektif untuk 3D */
+    transform-style: preserve-3d; /* PENTING: Konteks 3D untuk anak */
+}
+
+.sun {
+    position: absolute; width: 60px; height: 60px;
+    border-radius: 50%; left: -30px; top: -30px;  
+    cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-image:
+        radial-gradient(circle at 30% 30%, hsla(60, 100%, 95%, 0.9) 0%, hsla(50, 100%, 85%, 0) 40%),
+        radial-gradient(circle at 50% 50%, hsl(50, 100%, 70%), hsl(40, 100%, 50%));
+    box-shadow: 0 0 30px hsl(50, 100%, 55%), 0 0 55px hsl(40, 100%, 50%),
+                inset -4px -4px 12px hsla(30,100%,45%,0.5), inset 4px 4px 12px hsla(60,100%,80%,0.5);
+    transform-style: preserve-3d;
+}
+.sun:hover { transform: scale(1.1); }
+
+.orbit {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(150, 180, 255, 0.08); /* Jalur orbit lebih samar */
+    animation: orbit-rotation linear infinite;
+    transform-origin: center center;
+    transform-style: preserve-3d; /* PENTING */
+}
+.earth-orbit { width: 300px; height: 300px; margin-left: -150px; margin-top: -150px; animation-duration: 35s; }
+.mars-orbit { width: 450px; height: 450px; margin-left: -225px; margin-top: -225px; animation-duration: 65s; }
+.jupiter-orbit { width: 650px; height: 650px; margin-left: -325px; margin-top: -325px; animation-duration: 120s; }
+
+@keyframes orbit-rotation {
+    from { transform: rotateZ(0deg); } /* Rotasi orbit tetap 2D */
+    to { transform: rotateZ(360deg); }
+}
+
+/* Struktur Planet Baru */
+.planet-anchor { /* Posisi planet di orbit */
+    position: absolute;
+    width: 0; height: 0; /* Hanya titik acuan */
+    top: 0; left: 50%; /* Posisi di atas tengah orbit */
+}
+.planet-spinner { /* Elemen yang berotasi 3D (axial spin) */
+    position: absolute;
+    transform-style: preserve-3d; /* PENTING */
+    cursor: pointer;
+    animation: axial-spin linear infinite;
+    /* TranslateX(-50%) untuk memusatkan spinner di anchornya */
+    /* Ukuran spinner sama dengan planet-surface */
+}
+.planet-surface { /* Tampilan visual planet (shading, detail) */
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    position: absolute;
+    top: 0; left: 0;
+    transform-style: preserve-3d; /* Jika ada pseudo-elements 3D */
+    overflow: hidden; /* Jaga gradien */
+    box-shadow: inset -6px -3px 12px rgba(0,0,0,0.5); /* Bayangan dalam umum */
+}
+
+@keyframes axial-spin { 
+    from { transform: translateX(-50%) rotateY(0deg); }
+    to { transform: translateX(-50%) rotateY(360deg); }
+}
+
+/* Ukuran dan Durasi Spin untuk setiap Spinner Planet */
+.earth-spinner { width: 26px; height: 26px; animation-duration: 20s; --original-spin-duration: 20s; }
+.mars-spinner { width: 18px; height: 18px; animation-duration: 25s; --original-spin-duration: 25s; }
+.jupiter-spinner { width: 42px; height: 42px; animation-duration: 10s; --original-spin-duration: 10s; /* Jupiter berotasi cepat */ }
+
+/* Shading Spesifik untuk setiap Planet Surface */
+.earth-surface {
+    background-color: hsl(210, 70%, 25%); 
+    background-image:
+        radial-gradient(circle at 30% 28%, hsla(0,0%,100%,0.6) 0%, hsla(0,0%,100%,0) 20%), /* Highlight */
+        radial-gradient(ellipse at 40% 35%, hsla(190,70%,75%,0.25) 0%, hsla(190,70%,75%,0) 50%), /* Atmosfer tipis */
+        radial-gradient(circle at 50% 50%, transparent 35%, hsla(210, 60%, 15%, 0.3) 80%, hsla(210, 60%, 8%, 0.6) 95%); /* Shading bola */
+    box-shadow: inset -6px -3px 12px rgba(0,0,0,0.5), 0 0 10px hsla(190, 80%, 70%, 0.2); /* Bayangan & atmosfer glow */
+}
+.earth-surface::before { /* Daratan Bumi */
+    content: ''; position: absolute; top:0; left:0; width: 100%; height: 100%; border-radius: 50%;
+    background-image:
+        radial-gradient(ellipse at 60% 65%, hsla(100, 45%, 35%, 0.8) 8%, hsla(100, 45%, 35%, 0) 35%),
+        radial-gradient(ellipse at 25% 35%, hsla(90, 40%, 40%, 0.7) 5%, hsla(90, 40%, 40%, 0) 28%),
+        radial-gradient(ellipse at 70% 25%, hsla(30, 35%, 35%, 0.5) 3%, hsla(30, 35%, 35%, 0) 20%);
+    opacity: 0.85; transform: rotateZ(10deg) rotateX(5deg); /* Sedikit variasi kemiringan daratan */
+}
+
+.mars-surface {
+    background-color: hsl(10, 70%, 35%); 
+    background-image:
+        radial-gradient(circle at 28% 30%, hsla(25, 90%, 80%, 0.6) 0%, hsla(25, 90%, 80%,0) 25%),
+        radial-gradient(circle at 50% 50%, hsl(15, 65%, 50%), hsl(10, 70%, 35%) 80%);
+    box-shadow: inset -5px -3px 10px rgba(30,0,0,0.55), 0 0 6px hsla(15, 80%, 50%, 0.2);
+}
+.mars-surface::before { /* Detail permukaan Mars */
+    content: ''; position: absolute; top:0; left:0; width: 100%; height: 100%; border-radius: 50%;
+    background-image:
+        radial-gradient(ellipse at 65% 60%, hsla(10, 25%, 20%, 0.45) 4%, hsla(10, 25%, 20%, 0) 25%),
+        radial-gradient(ellipse at 35% 40%, hsla(15, 35%, 22%, 0.35) 6%, hsla(15, 35%, 22%, 0) 30%);
+    opacity: 0.7; transform: rotateZ(-5deg);
+}
+
+.jupiter-surface {
+    animation: jupiter-bands 10s linear infinite alternate; /* Animasi garis Jupiter */
+    background-color: hsl(35, 55%, 55%); 
+    background-image:
+        radial-gradient(circle at 33% 30%, hsla(50, 90%, 85%, 0.4) 0%, hsla(50, 90%, 85%,0) 30%), /* Highlight */
+        linear-gradient(160deg, /* Garis-garis */
+            hsla(40, 45%, 60%, 0.8) 15%, hsla(35, 45%, 50%, 0.85) 20%, 
+            hsla(30, 40%, 45%, 0.8) 35%, hsla(35, 45%, 50%, 0.85) 40%, 
+            hsla(40, 45%, 60%, 0.8) 55%, hsla(35, 45%, 50%, 0.85) 60%
+        ),
+        radial-gradient(circle at 50% 50%, hsla(40, 50%, 65%,0.2) 0%, transparent 75%, hsla(35, 50%, 35%,0.6) 95%); /* Shading bola */
+    background-blend-mode: overlay, normal, normal; 
+    background-size: 100% 100%, 200% 100%, 100% 100%; 
+    box-shadow: inset -9px -6px 18px rgba(40,25,0,0.5), 0 0 9px hsla(35, 50%, 50%, 0.2);
+    position: relative; /* Untuk pseudo-element cincin */
+}
+/* Cincin Jupiter (sederhana, seperti Saturnus) */
+.jupiter-surface::after {
+    content: '';
+    position: absolute;
+    width: 180%; height: 180%; /* Ukuran cincin relatif terhadap planet */
+    left: -40%; top: -40%; /* Pusatkan cincin */
+    border-radius: 50%;
+    border: 5px solid hsla(40, 60%, 70%, 0.5); /* Warna cincin */
+    box-sizing: border-box;
+    transform: rotateX(80deg) scaleY(0.4); /* Kemiringan cincin */
+    /* Cincin akan ikut berputar karena ada di dalam .jupiter-spinner */
+}
+@keyframes jupiter-bands {
+    0% { background-position: 0% 0%, 0% 0%, 0% 0%; } 
+    100% { background-position: 0% 0%, 100% 0%, 0% 0%; } 
+}
+
+/* Bulan (di dalam orbit Bumi) */
+.moon-orbit-anchor { position: absolute; width: 100%; height: 100%; top:0; left:0; transform-style: preserve-3d; }
+.moon-orbit { width: 45px; height: 45px; margin-left: -22.5px; margin-top: -22.5px; animation-duration: 5s; border-width: 1px; border-color: rgba(200,200,220,0.15); }
+.moon-anchor { top: 0; left: 50%; }
+.moon-spinner { width: 7px; height: 7px; animation-duration: 28s; --original-spin-duration: 28s; }
+.moon-surface {
+    background-color: hsl(0, 0%, 50%); 
+    background-image:
+        radial-gradient(circle at 25% 28%, hsla(0,0%,85%,0.7) 0%, hsla(0,0%,80%,0) 18%),
+        radial-gradient(circle at 60% 65%, hsla(0,0%,45%,1) 5%, hsla(0,0%,45%,0) 20%),
+        radial-gradient(circle at 50% 50%, transparent 45%, hsla(0,0%,15%,0.5) 90%, hsla(0,0%,8%,0.8) 100%);
+    box-shadow: inset -1px -0.5px 2px rgba(0,0,0,0.6), 0 0 2px hsla(0,0%,70%,0.1);
+}
+
+/* Efek Klik dan Hover untuk Objek Langit */
+.celestial-body { transition: transform 0.2s ease-out; } /* Untuk kelancaran saat kembali dari pulse */
+.celestial-body:hover {
+    /* Di-override oleh .sun:hover. Ini untuk planet & bulan */
+    /* Biarkan axial-spin yang mengontrol rotateY */
+    transform: translateX(-50%) scale(1.2); /* Hanya scale dan jaga posisi tengah */
+    z-index: 1;
+}
+/* Khusus untuk .sun karena tidak ada translateX di transform defaultnya */
+.sun.celestial-body:hover { transform: scale(1.1); }
+
+.celestial-body.clicked-effect .planet-spinner, /* Target spinner jika ada */
+.celestial-body.clicked-effect .moon-spinner,
+.sun.celestial-body.clicked-effect { /* Atau langsung sun */
+    /* Simpan animasi asli, lalu tambahkan pulse */
+    animation: pulse-spin 0.5s ease-out forwards, axial-spin var(--original-spin-duration) linear infinite 0.5s;
+    /* Untuk sun yang tidak punya axial-spin, hanya pulse: */
+    /* animation: pulse-sun 0.5s ease-out; */
+}
+/* Sun tidak punya --original-spin-duration, jadi pulse-nya beda */
+.sun.celestial-body.clicked-effect { animation: pulse-sun 0.5s ease-out; }
+
+
+@keyframes pulse-spin { /* Untuk planet/moon yang punya axial-spin */
+    0%   { transform: translateX(-50%) scale(1.2) rotateY(var(--current-Y-rotation, 0deg)); }
+    50%  { transform: translateX(-50%) scale(1.4) rotateY(var(--current-Y-rotation-pulse, 20deg)); }
+    100% { transform: translateX(-50%) scale(1.2) rotateY(var(--current-Y-rotation, 0deg)); }
+}
+@keyframes pulse-sun {
+    0% {transform: scale(1.1);} 50% {transform: scale(1.25);} 100% {transform: scale(1.1);}
+}
+
+
+.celestial-info-box { /* Info box tetap sama */
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background-color: rgba(0, 200, 200, 0.9); color: #00001a;
+    padding: 12px 22px; border-radius: 8px;
+    font-family: 'Orbitron', sans-serif; font-size: 0.9em;
+    z-index: 1000; opacity: 0;
+    transition: opacity 0.5s ease, transform 0.3s ease;
+    pointer-events: none; text-align: center;
+    max-width: 80%; box-shadow: 0 0 15px rgba(0,255,255,0.5);
+}
+.celestial-info-box.visible { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+/* --- Konten Utama Halaman (Hero, About, Feedback, Footer) --- */
+/* SEMUA CSS UNTUK BAGIAN INI SAMA PERSIS DENGAN JAWABAN "bikinkan dari awal di bagian css" SEBELUMNYA */
+/* Pastikan Anda menyalinnya dengan benar */
+.container {
+    width: 90%; max-width: 1100px; margin: 0 auto; padding: 20px;
+    position: relative; z-index: 1; 
+}
+.hero-section {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 50px 0; min-height: 85vh; 
+    animation: fadeInGrow 1.5s ease-out forwards;
+}
+@keyframes fadeInGrow {
+    0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.hero-text {
+    flex-basis: 58%; padding-right: 30px; 
+    animation: slideInFromLeft 1s ease-out 0.5s forwards; opacity: 0;
+}
+@keyframes slideInFromLeft {
+    0% { opacity: 0; transform: translateX(-50px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+.hero-text h1 { font-family: 'Orbitron', sans-serif; font-size: 2.8em; margin-bottom: 15px; color: #ffffff; line-height: 1.2; text-shadow: 0 0 5px #00ffff; }
+.hero-text .highlight-name { color: #00ffff; }
+.hero-text .subtitle { font-family: 'Orbitron', sans-serif; font-size: 1.4em; color: #aaaaff; margin-bottom: 25px; }
+.hero-text p { font-size: 1.05em; margin-bottom: 20px; color: #d0d0f0; }
+.hero-image {
+    flex-basis: 38%; text-align: center;
+    animation: slideInFromRight 1s ease-out 0.5s forwards; opacity: 0;
+}
+@keyframes slideInFromRight {
+    0% { opacity: 0; transform: translateX(50px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+.hero-image img { 
+    max-width: 100%; height: auto; border-radius: 15px; 
+    border: 3px solid #007777; 
+    box-shadow: 0 0 20px #00ffff, 0 0 35px #007777; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+.hero-image img:hover { transform: scale(1.03) rotate(1deg); box-shadow: 0 0 30px #00ffff, 0 0 45px #00aaff, 0 0 10px white; }
+.cta-button { 
+    display: inline-block; background-color: #00ffff; color: #00001a; 
+    padding: 12px 28px; text-decoration: none; 
+    font-family: 'Orbitron', sans-serif; font-weight: bold; border-radius: 5px; 
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+    box-shadow: 0 0 10px #00ffff, inset 0 0 5px rgba(255,255,255,0.3); border: 1px solid #00cccc; 
+}
+.cta-button:hover { 
+    background-color: #ffffff; color: #00001a; 
+    transform: translateY(-3px) scale(1.05); 
+    box-shadow: 0 0 15px #00ffff, 0 0 25px #ffffff, inset 0 0 8px rgba(0,0,0,0.2); 
+}
+.content-section { 
+    padding: 50px 25px; margin-top: 40px; 
+    background-color: rgba(10, 25, 50, 0.8); border-radius: 10px; 
+    box-shadow: 0 0 20px rgba(0, 200, 200, 0.35); 
+    animation: subtleFloat 8s ease-in-out infinite alternate; 
+}
+@keyframes subtleFloat {
+    0% { transform: translateY(0px); } 50% { transform: translateY(-7px); } 100% { transform: translateY(0px); }
+}
+.content-section h2 { font-family: 'Orbitron', sans-serif; font-size: 2em; text-align: center; margin-bottom: 35px; color: #00ffff; text-shadow: 0 0 8px #00ffff; }
+.about-content ul { list-style: none; padding-left: 0; }
+.about-content ul li { font-size: 1.05em; margin-bottom: 12px; display: flex; align-items: center; color: #c8c8e8; }
+.about-content ul li .icon { font-size: 1.4em; margin-right: 12px; color: #00ffff; }
+.contact-form-section { text-align: center; }
+.contact-form input[type="text"], .contact-form input[type="email"], .contact-form textarea { 
+    width: calc(100% - 24px); padding: 12px; margin-bottom: 18px; 
+    border-radius: 5px; border: 1px solid #004466; 
+    background-color: rgba(0, 10, 30, 0.85); color: #e0e0e0; 
+    font-family: 'Roboto', sans-serif; font-size: 1em; 
+}
+.contact-form input[type="text"]::placeholder, .contact-form input[type="email"]::placeholder, .contact-form textarea::placeholder { color: #88aaff; opacity: 0.7; }
+.contact-form textarea { resize: vertical; min-height: 100px; }
+.feedback-status-message { margin-top: 18px; padding: 12px; border-radius: 5px; font-weight: bold; display: none; font-size: 0.95em; }
+.feedback-status-message.success { background-color: #00ffff; color: #00001a; display: block; }
+.feedback-status-message.error { background-color: #ff6b6b; color: white; display: block; }
+#submitted-feedback-container { margin-top: 40px; padding: 25px; background-color: rgba(0, 30, 60, 0.7); border: 1px solid rgba(0, 200, 200, 0.25); border-radius: 8px; text-align: left; }
+#submitted-feedback-container h3 { color: #00ffff; font-family: 'Orbitron', sans-serif; font-size: 1.4em; margin-top: 0; margin-bottom: 20px; text-align: center; text-shadow: 0 0 5px #00ffff; }
+#feedback-list { list-style: none; padding: 0; margin: 0; max-height: 300px; overflow-y: auto; }
+#feedback-list li { background-color: rgba(10, 25, 50, 0.9); border: 1px solid rgba(0, 150, 150, 0.5); padding: 15px; margin-bottom: 12px; border-radius: 6px; word-wrap: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+#feedback-list li strong { color: #33dddd; display: block; margin-bottom: 5px; font-size: 1.05em; }
+.feedback-email-display { font-size: 0.8em; color: #99ccff; margin-left: 8px; font-style: italic; }
+.feedback-text-message { margin-top: 8px; margin-bottom: 0; white-space: pre-wrap; color: #d8d8f8; font-size: 0.95em; }
+.no-feedback-text { text-align: center; color: #aaaaff; font-style: italic; padding: 15px 0; }
+.social-links { margin-top: 30px; text-align: center; }
+.social-links img { width: 38px; height: 38px; margin: 0 10px; transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0.8; }
+.social-links img:hover { transform: scale(1.2); opacity: 1; }
+footer { text-align: center; padding: 30px 0; margin-top: 50px; border-top: 1px solid #002244; font-size: 0.9em; color: #aaaaff; }
+
+/* --- Responsive Design --- */
+@media (max-width: 900px) { 
+    .solar-system-container { transform: scale(0.65); top: 52%; } /* Sedikit lebih kecil */
+    .hero-text h1 { font-size: 2.5em; } .hero-text .subtitle { font-size: 1.3em; }
+}
+@media (max-width: 768px) {
+    .hero-section { flex-direction: column; text-align: center; min-height: auto; padding-top: 30px; }
+    .hero-text { flex-basis: 100%; padding-right: 0; margin-bottom: 30px; }
+    .hero-image { flex-basis: 100%; max-width: 280px; margin: 0 auto; } /* Gambar lebih kecil */
+    .solar-system-container { transform: scale(0.45); top: 60%; } /* Lebih kecil lagi */
+    .celestial-info-box { font-size: 0.75em; padding: 7px 14px; max-width: 90%; bottom: 8px; }
+    .content-section h2 { font-size: 1.7em; }
+}
+@media (max-width: 480px) {
+    body { line-height: 1.6; }
+    .hero-text h1 { font-size: 1.7em; } .hero-text .subtitle { font-size: 1em; }
+    .hero-text p { font-size: 0.9em;}
+    .cta-button { padding: 9px 18px; font-size: 0.85em; }
+    .solar-system-container { transform: scale(0.3); top: 68%; } /* Sangat kecil */
+    #feedback-list { max-height: 180px; }
+    .content-section h2 { font-size: 1.5em; }
+    .about-content ul li { font-size: 0.9em; }
+}

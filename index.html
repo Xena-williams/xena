@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About me</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="stars-container"></div>
+
+    <div class="solar-system-container">
+        <div class="sun celestial-body" data-info="Ini Matahari, bintang pusat tata surya kita!"></div>
+
+        <div class="orbit earth-orbit">
+            <div class="planet-anchor earth-anchor"> <div class="planet-spinner earth-spinner celestial-body" data-info="Bumi, planet biru rumah kita."> <div class="planet-surface earth-surface"></div> <div class="moon-orbit-anchor"> <div class="orbit moon-orbit"> <div class="planet-anchor moon-anchor">
+                                <div class="moon-spinner celestial-body" data-info="Bulan, satelit alami Bumi.">
+                                    <div class="planet-surface moon-surface"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="orbit mars-orbit">
+            <div class="planet-anchor mars-anchor">
+                <div class="planet-spinner mars-spinner celestial-body" data-info="Mars, si Planet Merah yang misterius.">
+                    <div class="planet-surface mars-surface"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="orbit jupiter-orbit">
+            <div class="planet-anchor jupiter-anchor">
+                <div class="planet-spinner jupiter-spinner celestial-body" data-info="Jupiter, raksasa gas dengan Bintik Merah Raksasa.">
+                    <div class="planet-surface jupiter-surface">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="celestial-info-box" class="celestial-info-box">Klik sebuah objek langit untuk info!</div>
+
+    <div class="container">
+        <header class="hero-section">
+            <div class="hero-text">
+                <h1>Halo, everyone  <span class="highlight-name">my name is sena</span>!</h1>
+                <p class="subtitle">saya Seorang pelajar </p>
+                <p>Selamat datang di laman pribadi saya! Saya adalah siswa kelas 10 dari sekola sman 1 ciampea. Saya percaya bahwa rasa ingin tahu adalah kunci untuk terus belajar dan berkembang.</p>
+                <p>Melalui halaman ini, saya ingin berbagi sedikit tentang siapa saya,dan hal-hal yang menginspirasi saya. Mari kita jelajahi bersama!</p>
+                <a href="#feedback-section" class="cta-button">Tinggalkan Pesan</a>
+            </div>
+            <div class="hero-image">
+                <img src="471267980_1275982850305098_8002741892669327724_n.jpg" alt="Foto [Nama Anda]">
+            </div>
+        </header>
+
+        <section id="about-me" class="content-section">
+            <h2>Lebih Jauh Tentang Saya</h2>
+            <div class="about-content">
+                <p>Saya berasal dari Cikampak city dan saat ini berfokus pada sekola. Beberapa keahlian saya:</p>
+                <ul>
+                    <li><i class="icon">🚀</i> Keahlian saya mencintai seseorang yang gak pasti</li>
+                    <li><i class="icon">🌌</i> Keahlian saya menunggu yang tidak pasti</li>
+                    <li><i class="icon">🌠</i> Keahlian saya adalah hengker</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="feedback-section" class="content-section contact-form-section">
+            <h2>Masukan atau Pesan</h2>
+            <p>Punya pertanyaan, saran, atau sekadar ingin menyapa? Silakan tinggalkan pesan di bawah ini.</p>
+            <form id="feedback-form" class="contact-form">
+                <input type="text" name="name" id="feedback-name" placeholder="Nama Anda" required>
+                <input type="email" name="email" id="feedback-email" placeholder="Email Anda (Opsional)">
+                <textarea name="message" id="feedback-message" placeholder="Pesan Anda..." rows="5" required></textarea>
+                <button type="submit" class="cta-button">Kirim Pesan</button>
+            </form>
+            <div id="feedback-status" class="feedback-status-message"></div>
+            <div id="submitted-feedback-container">
+                <h3>Pesan yang Diterima:</h3>
+                <ul id="feedback-list"></ul>
+                <p id="no-feedback-message" class="no-feedback-text">Belum ada pesan.</p>
+            </div>
+            <div class="social-links">
+                <a href="https://www.facebook.com/yadi123y/" target="_blank" title="Facebook"><img src="https://img.icons8.com/fluency/48/facebook-new.png" alt="Facebook"/></a>
+                <a href="https://wa.me/62895410247401" target="_blank" title="WhatsApp"><<img src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="WhatsApp"/></a>
+                <a href="https://www.instagram.com/sen_3103_/" target="_blank" title="Instagram"><img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram"/></a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Xena. Dibuat dengan semangat eksplorasi.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
